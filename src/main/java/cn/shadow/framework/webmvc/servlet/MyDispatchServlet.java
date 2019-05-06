@@ -84,7 +84,13 @@ public class MyDispatchServlet extends HttpServlet{
 
 	private HandlerAdapter getHandlerAdapter(HandlerMapping handler) {
 		// TODO Auto-generated method stub
-		
+		if(this.handlerAdapters.isEmpty()) {
+			return null;
+		}
+		HandlerAdapter ha=this.handlerAdapters.get(handler);
+		if(ha.support(handler)) {
+			return ha;
+		}
 		
 		return null;
 	}
