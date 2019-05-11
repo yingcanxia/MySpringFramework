@@ -29,7 +29,7 @@ public class MyDispatchServlet extends HttpServlet{
 	private MyApplicationContext context;
 	private List<HandlerMapping>handlerMappings=new ArrayList<HandlerMapping>();
 	private Map<HandlerMapping,HandlerAdapter>handlerAdapters=new HashMap<HandlerMapping, HandlerAdapter>();
-	private List<MyViewresolvers>viewresolvers;
+	private List<MyViewResolvers>viewResolvers;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -51,7 +51,7 @@ public class MyDispatchServlet extends HttpServlet{
 		try {
 			HandlerMapping handler =getHandler(req);
 			if(handler==null) {
-				
+				processDispatchResult(req, resp, new MyModleAndView("404"));
 				//new ModleAndView("404")
 				return;
 			}
@@ -68,6 +68,7 @@ public class MyDispatchServlet extends HttpServlet{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			processDispatchResult(req, resp, new MyModleAndView("500"));
 		}
 		
 		
@@ -80,20 +81,24 @@ public class MyDispatchServlet extends HttpServlet{
 		if(null==mv){
 			return;
 		}
-	}
-
-	private HandlerAdapter getHandlerAdapter(HandlerMapping handler) {
-		// TODO Auto-generated method stub
-		if(this.handlerAdapters.isEmpty()) {
-			return null;
-		}
-		HandlerAdapter ha=this.handlerAdapters.get(handler);
-		if(ha.support(handler)) {
-			return ha;
+		
+		if(this.viewResolvers.isEmpty()) {
+			return;
 		}
 		
-		return null;
+		try {
+			for(MyViewResolvers viewResolvers:this.viewResolvers) {
+				MyView view=viewResolvers.resolveViewName(mv.getViewName(), null);
+				view.render(mv.getModel(), req, resp);
+				return;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
+
+	
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -141,7 +146,7 @@ public class MyDispatchServlet extends HttpServlet{
 		File templateRootDir=new File(templateRootPath);
 		for (File file : templateRootDir.listFiles()) {
 			//file
-			this.viewresolvers.add(new MyViewresolvers(templateRoot));
+			this.viewResolvers.add(new MyViewResolvers(templateRoot));
 		}
 		
 	}
@@ -231,14 +236,20 @@ public class MyDispatchServlet extends HttpServlet{
 			return mapping;
 			
 		}
-		
-		
-		
+		return null;
+	}
+	private HandlerAdapter getHandlerAdapter(HandlerMapping handler) {
+		// TODO Auto-generated method stub
+		if(this.handlerAdapters.isEmpty()) {
+			return null;
+		}
+		HandlerAdapter ha=this.handlerAdapters.get(handler);
+		if(ha.support(handler)) {
+			return ha;
+		}
 		
 		return null;
-		
 	}
-
 
 	
 

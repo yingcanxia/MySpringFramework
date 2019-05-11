@@ -2,9 +2,9 @@ package cn.shadow.framework.webmvc.servlet;
 
 import java.util.Locale;
 
-public class MyViewresolvers {
+public class MyViewResolvers {
 
-	public MyViewresolvers(String templateRoot) {
+	public MyViewResolvers(String templateRoot) {
 		// TODO Auto-generated constructor stub
 	}
 	MyView resolveViewName(String viewName,Locale locale) {

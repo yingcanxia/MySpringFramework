@@ -60,14 +60,25 @@ public class HandlerAdapter {
 			paramValues[index]=caseStringValue(paramTypes[index], value);
 		}
 		//调用找到的方法去执行
-		Object returnValue=handlerMapping.method.invoke(handlerMapping.controller, paramValues);
+		if(paramIndexMapping.containsKey(HttpServletRequest.class.getName())) {
+			int reqIndex=paramIndexMapping.get(HttpServletRequest.class.getName());
+			paramValues[reqIndex]=request;
+		}
+		if(paramIndexMapping.containsKey(HttpServletResponse.class.getName())) {
+			int respIndex=paramIndexMapping.get(HttpServletResponse.class.getName());
+			paramValues[respIndex]=response;
+		}
+		
+		Object result=handlerMapping.getMethod().invoke(handlerMapping.getController(), paramValues);
 		//当返回值是空或者方法是void的时候
-		if(returnValue==null||returnValue instanceof Void) {
+		if(result==null||result instanceof Void) {
 			return null;
 			//正常返回
 		}
-		//当不是的时候让response去写出结果
-		//response.getWriter().write(returnValue.toString());
+		if(handlerMapping.getMethod().getReturnType()==MyModleAndView.class) {
+			return (MyModleAndView) result;
+		}
+		
 		return null;
 	}
 	private Object caseStringValue(Class<?> class1, String value) {
