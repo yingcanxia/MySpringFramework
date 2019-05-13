@@ -36,8 +36,8 @@ public class MyView {
 				if(null==paramValue) {
 					continue;
 				}
-				line=matcher.replaceFirst(paramValue.toString());
-				matcher=pattern.matcher(makeStringForRegExp(line));
+				line=matcher.replaceFirst(makeStringForRegExp(paramValue.toString()));
+				matcher=pattern.matcher(line);
 				
 				
 			}
