@@ -37,7 +37,7 @@ public class MyView {
 					continue;
 				}
 				line=matcher.replaceFirst(paramValue.toString());
-				matcher=pattern.matcher(line);
+				matcher=pattern.matcher(makeStringForRegExp(line));
 				
 				
 			}
@@ -48,5 +48,15 @@ public class MyView {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType(DEFAULT_CONTENT_TYPE);
 		response.getWriter().write(sb.toString());
+	}
+	private static String makeStringForRegExp(String str) {
+		return  str.replace("\\", "\\\\").replace("*", "\\*")
+				.replace("+", "\\+").replace("|","\\|")
+				.replace("{", "\\{").replace("}", "\\}")
+				.replace("(", "\\(").replace(")", "\\)")
+				.replace("^", "\\^").replace("$", "\\$")
+				.replace("[", "\\[").replace("]", "\\]")
+				.replace("?", "\\?").replace(",", "\\,")
+				.replace(".", "\\.").replace("&", "\\&");
 	}
 }
