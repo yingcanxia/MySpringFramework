@@ -26,6 +26,7 @@ public class JdkDynamicAopProxy implements MyAopProxy,InvocationHandler{
 	}
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		// TODO Auto-generated method stub
+		//»ñÈ¡À¹½ØÆ÷Á´
 		List<Object> interceptorsAndDynamicMethodMatchers= this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, advised.getTargetClass());
 		MyMethodInvocation methodInvocation=new MyMethodInvocation(proxy, null, method, args, this.advised.getTargetClass(), null);
 		return methodInvocation.proceed();

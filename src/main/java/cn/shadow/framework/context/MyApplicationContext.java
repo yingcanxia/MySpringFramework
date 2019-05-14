@@ -9,6 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import cn.shadow.framework.annotation.MyAutowired;
 import cn.shadow.framework.annotation.MyController;
 import cn.shadow.framework.annotation.MyService;
+import cn.shadow.framework.aop.CglibAopProxy;
+import cn.shadow.framework.aop.JdkDynamicAopProxy;
+import cn.shadow.framework.aop.MyAopProxy;
+import cn.shadow.framework.aop.config.MyAopConfig;
+import cn.shadow.framework.aop.support.MyAdvisedSupport;
 import cn.shadow.framework.beans.MyBeanFactory;
 import cn.shadow.framework.beans.MyBeanWrapper;
 import cn.shadow.framework.beans.config.MyBeanDefinition;
@@ -57,6 +62,10 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		beanDefinition.setFactoryBeanName(beanName);*/
 		MyBeanWrapper beanWrapper=new MyBeanWrapper(instance); 
 		
+		//创建一个代理的策略,是通过jdk还是Cglib并返回实例
+		/*
+		 * MyAopProxy aopProxy; //通过代理实例返回被代理对象 Object proxy=aopProxy.getProxy(); proxy
+		 */
 		/* MyBeanWrapper beanWrapper=instantiateBean(beanName,beanDefinition); */
 		//2：拿到beanwrapper之后，将其保存到IOC容器之后
 		
@@ -121,6 +130,15 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 			}else {
 				Class<?> clazz =Class.forName(className);
 				instance=clazz.newInstance();
+				MyAdvisedSupport config=instantionAopConfig(beanDefinition);
+				config.setTargetClass(clazz);
+				config.setTarget(instance);
+				
+				//如果符合PointCut规则则表明是代理
+				if(config.pointCut()) {
+					instance=createProxy(config).getProxy();
+				}
+				
 				//根据名字
 				this.singlettonObject.put(className, instance);
 				//根据类型
@@ -137,6 +155,7 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		
 	}
 
+	
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
@@ -181,8 +200,27 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 			super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
 		}
 	}
-
+	private MyAopProxy createProxy(MyAdvisedSupport config) {
+		Class targetClass=config.getTargetClass();
+		if(targetClass.getInterfaces().length>0) {
+			return new JdkDynamicAopProxy(config);
+		}
+		
+		return new CglibAopProxy(config);
+	}
 	
+	private MyAdvisedSupport instantionAopConfig(MyBeanDefinition beanDefinition) {
+		// TODO Auto-generated method stub
+		
+		MyAopConfig config=new MyAopConfig();
+		config.setPointCut(this.reader.getConfig().getProperty("pointCut"));
+		config.setAspectBefore(this.reader.getConfig().getProperty("aspectBefore"));
+		config.setAspectAfter(this.reader.getConfig().getProperty("aspectAfter"));
+		config.setAspectClass(this.reader.getConfig().getProperty("aspectClass"));
+		config.setAspectAfterThrow(this.reader.getConfig().getProperty("aspectAfterThrow"));
+		config.setAspectAfterThrowingName(this.reader.getConfig().getProperty("aspectAfterThrowingName"));
+		return new MyAdvisedSupport(config);
+	}
 	public Properties getConfig() {
 		return this.reader.getConfig();
 	}
