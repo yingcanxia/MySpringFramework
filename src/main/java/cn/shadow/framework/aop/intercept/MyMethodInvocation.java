@@ -3,7 +3,9 @@ package cn.shadow.framework.aop.intercept;
 import java.lang.reflect.Method;
 import java.util.List;
 
-public class MyMethodInvocation {
+import cn.shadow.framework.aop.aspect.MyJoinPoint;
+
+public class MyMethodInvocation implements MyJoinPoint{
 	
 	private Object proxy;
 	private Method method;
@@ -12,7 +14,8 @@ public class MyMethodInvocation {
 	private List<Object>interceptorsAndDynamicMethodMatchers;
 	private Class<?>targetClass;
 	
-
+	//定义一个索引，从-1开始来记录当前拦截器执行的位置
+	private int currentInterceptorIndex=-1;
 	//拦截器链调用过程
 	public MyMethodInvocation(
 			Object proxy,Object target,Method method,Object[] arguments,
@@ -26,7 +29,36 @@ public class MyMethodInvocation {
 	}
 	
 	public Object proceed()throws Throwable{
-		return null;
-		
+		//如果整个执行链执行完成后
+		if(this.currentInterceptorIndex==this.interceptorsAndDynamicMethodMatchers.size()-1) {
+			return this.method.invoke(this.target, this.arguments);
+		}
+		Object interceptorOrInterceptionAdvice=this.interceptorsAndDynamicMethodMatchers.get(++this.currentInterceptorIndex);
+		if(interceptorOrInterceptionAdvice instanceof MyMethodInterceptor) {
+			MyMethodInterceptor mi=(MyMethodInterceptor)interceptorOrInterceptionAdvice;
+			return mi.invoke(this);
+		}else {
+			//动态匹配失败时，掠过当前拦截器调用下一个
+			return proceed();
+		}
 	}
+
+	@Override
+	public Object getThis() {
+		// TODO Auto-generated method stub
+		return this.target;
+	}
+
+	@Override
+	public Object[] getArguments() {
+		// TODO Auto-generated method stub
+		return this.arguments;
+	}
+
+	@Override
+	public Method getMethod() {
+		// TODO Auto-generated method stub
+		return this.method;
+	}
+
 }

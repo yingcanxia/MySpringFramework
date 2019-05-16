@@ -15,7 +15,8 @@ public class MyAfterThrowingAdviceInterceptor extends MyAbstractAspectAdvice imp
 	@Override
 	public Object invoke(MyMethodInvocation invocation) throws Throwable {
 		// TODO Auto-generated method stub
-		return null;
+		
+		return invocation.proceed();
 	}
 
 	public void setThrowName(String throwName) {
