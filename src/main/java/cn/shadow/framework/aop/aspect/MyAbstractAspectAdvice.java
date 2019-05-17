@@ -2,7 +2,7 @@ package cn.shadow.framework.aop.aspect;
 
 import java.lang.reflect.Method;
 
-public abstract class MyAbstractAspectAdvice {
+public abstract class MyAbstractAspectAdvice implements MyAdvice{
 
 	private Method aspectMethod;
 	private Object aspectTarget;

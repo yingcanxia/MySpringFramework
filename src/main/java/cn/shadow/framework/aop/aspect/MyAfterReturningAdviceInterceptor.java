@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import cn.shadow.framework.aop.intercept.MyMethodInterceptor;
 import cn.shadow.framework.aop.intercept.MyMethodInvocation;
 
-public class MyAfterReturningAdviceInterceptor extends MyAbstractAspectAdvice implements MyMethodInterceptor {
+public class MyAfterReturningAdviceInterceptor extends MyAbstractAspectAdvice implements MyAdvice,MyMethodInterceptor {
 
 	private MyJoinPoint joinPoint;
 	public MyAfterReturningAdviceInterceptor(Method aspectMethod, Object aspectTarget) {

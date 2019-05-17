@@ -5,8 +5,9 @@ import java.lang.reflect.Method;
 import cn.shadow.framework.aop.intercept.MyMethodInterceptor;
 import cn.shadow.framework.aop.intercept.MyMethodInvocation;
 
-public class MyAfterThrowingAdviceInterceptor extends MyAbstractAspectAdvice implements MyMethodInterceptor{
+public class MyAfterThrowingAdviceInterceptor extends MyAbstractAspectAdvice implements MyAdvice,MyMethodInterceptor{
 
+	private String throwingName;
 	public MyAfterThrowingAdviceInterceptor(Method aspectMethod, Object aspectTarget) {
 		super(aspectMethod, aspectTarget);
 		// TODO Auto-generated constructor stub
@@ -24,7 +25,13 @@ public class MyAfterThrowingAdviceInterceptor extends MyAbstractAspectAdvice imp
 		}
 	}
 
-	public void setThrowName(String throwName) {
-		
+	public String getThrowingName() {
+		return throwingName;
 	}
+
+	public void setThrowingName(String throwingName) {
+		this.throwingName = throwingName;
+	}
+
+	
 }

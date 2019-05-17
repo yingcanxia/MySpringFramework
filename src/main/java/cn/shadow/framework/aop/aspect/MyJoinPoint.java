@@ -9,4 +9,8 @@ public interface MyJoinPoint {
 	Object[] getArguments();
 	
 	Method getMethod();
+	
+	void setUserAttribute(String key,Object obj);
+	
+	Object getUserAttribute(String key);
 }

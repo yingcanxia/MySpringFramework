@@ -102,7 +102,7 @@ public class MyAdvisedSupport {
 						//创建一个advise对象
 						MyAfterThrowingAdviceInterceptor throwingAdviceInterceptor=
 								new MyAfterThrowingAdviceInterceptor(aspectMethods.get(config.getAspectAfterThrow()),aspectClass.newInstance());
-						throwingAdviceInterceptor.setThrowName(config.getAspectAfterThrowingName());
+						throwingAdviceInterceptor.setThrowingName(config.getAspectAfterThrowingName());
 						advices.add(throwingAdviceInterceptor);
 					}
 					methodCache.put(method,advices);

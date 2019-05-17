@@ -37,6 +37,7 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 	
 	public MyApplicationContext(String... configLocayions) {
 		this.configLocayions=configLocayions;
+		refresh();
 	}
 	public Object getBean(Class<?> beanClass) throws Exception{
 		return getBean(beanClass.getName());
@@ -56,8 +57,8 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		MyBeanDefinition beanDefinition=this.beanDefinitionMap.get(beanName);
 		MyBeanPostProcessor postProcessor=new MyBeanPostProcessor();
 		Object instance=null;
-		instance=instantiateBean(beanName,beanDefinition);
 		postProcessor.postProcessBeforeInitializetion(instance, beanName);
+		instance=instantiateBean(beanName,beanDefinition);
 		/*MyBeanDefinition beanDefinition=new MyBeanDefinition();
 		beanDefinition.setFactoryBeanName(beanName);*/
 		MyBeanWrapper beanWrapper=new MyBeanWrapper(instance); 
@@ -170,7 +171,12 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		//2
 		List<MyBeanDefinition> beanDefinitions=reader.loadBeanDefinitions();
 		//3
-		doRegisterBeanDefinition(beanDefinitions);
+		try {
+			doRegisterBeanDefinition(beanDefinitions);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//4
 		doAutoWrited();
 	}
@@ -193,10 +199,12 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		/*super.BeanDefinitionMap.entrySet()*/
 	}
 
-	private void doRegisterBeanDefinition(List<MyBeanDefinition> beanDefinitions) {
+	private void doRegisterBeanDefinition(List<MyBeanDefinition> beanDefinitions) throws Exception {
 		// TODO Auto-generated method stub
 		for(MyBeanDefinition beanDefinition:beanDefinitions) {
-			
+			if(super.beanDefinitionMap.containsKey(beanDefinition.getFactoryBeanName())) {
+				throw new Exception("The ¡°" + beanDefinition.getFactoryBeanName() + "¡± is exists!!");
+			}
 			super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
 		}
 	}
