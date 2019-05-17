@@ -5,7 +5,7 @@ import java.util.Locale;
 
 public class MyViewResolvers {
 
-	private final String DEFAULT_TEMPLATE_SUFIX="html";
+	private final String DEFAULT_TEMPLATE_SUFIX=".html";
 	private File templateRootDir;
 	//private String viewName;
 	

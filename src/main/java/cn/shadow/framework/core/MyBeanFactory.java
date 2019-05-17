@@ -1,4 +1,4 @@
-package cn.shadow.framework.beans;
+package cn.shadow.framework.core;
 //单例工厂的顶层设计
 public interface MyBeanFactory {
 	//本方法非常关键通过唯一的入口获取对象

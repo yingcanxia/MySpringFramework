@@ -47,6 +47,7 @@ public class MyAdvisedSupport {
 	
 	public void setTargetClass(Class<?> targetClass) {
 		this.targetClass = targetClass;
+		prase();
 	}
 
 	public Object getTarget() {
@@ -65,7 +66,7 @@ public class MyAdvisedSupport {
 				.replaceAll("\\)", "\\\\)");
 		/* pointCut=public .* cn.shadow.service..*service..*(.*) */
 		String pointCutForClassRegex=poingCut.substring(0,poingCut.lastIndexOf("\\(")-4);
-		pointCutClassPattern=Pattern.compile("class"+pointCutForClassRegex.substring(pointCutForClassRegex.lastIndexOf(" ")+1));
+		pointCutClassPattern=Pattern.compile("class "+pointCutForClassRegex.substring(pointCutForClassRegex.lastIndexOf(" ")+1));
 		Pattern pattern=Pattern.compile(poingCut);
 		
 		methodCache=new HashMap<Method, List<Object>>();

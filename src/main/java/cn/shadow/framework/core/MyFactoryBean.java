@@ -1,4 +1,4 @@
-package cn.shadow.framework.beans;
+package cn.shadow.framework.core;
 
 public interface MyFactoryBean {
 

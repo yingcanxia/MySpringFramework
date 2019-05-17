@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
+encoding//src/main/java/cn/shadow/user/service/IModifyService.java=UTF-8
+encoding//src/main/java/cn/shadow/user/service/impl/ModifyService.java=UTF-8
 encoding//src/main/resources/conf/application.properties=UTF-8

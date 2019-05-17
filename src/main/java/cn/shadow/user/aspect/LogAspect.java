@@ -1,4 +1,4 @@
-package cn.shadow.aspect;
+package cn.shadow.user.aspect;
 
 import cn.shadow.framework.aop.aspect.MyJoinPoint;
 

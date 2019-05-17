@@ -67,10 +67,10 @@ public class MyBeanDefinitionReader {
 				if(beanClass.isInterface()) {
 					continue;
 				}
-				result.add(doCreateBeanDefinition(className));
+				result.add(doCreateBeanDefinition(toLowerFirstCase(beanClass.getSimpleName()),beanClass.getName()));
 				Class<?>[]interfaces=beanClass.getInterfaces();
 				for(Class<?>i:interfaces) {
-					result.add(doCreateBeanDefinition(i.getName()));
+					result.add(doCreateBeanDefinition(i.getName(),beanClass.getName()));
 				}
 				
 			}
@@ -82,25 +82,13 @@ public class MyBeanDefinitionReader {
 		
 	}
 	//将每一个配置信息解析成一个BeanDefinition
-	private MyBeanDefinition doCreateBeanDefinition(String className) {
-		
-		
-		try {
-			Class<?>beanClass=Class.forName(className);
-			if(beanClass.isInterface()) {
-				return null;
-			}
-			MyBeanDefinition beanDefinition=new MyBeanDefinition();
-			beanDefinition.setBeanClassName(className);
-			beanDefinition.setFactoryBeanName(toLowerFirstCase(beanClass.getSimpleName()));
-			return  beanDefinition;
-			//有可能是接口，对其实现类进行处理，用其实现类作为BeanClassName
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	private MyBeanDefinition doCreateBeanDefinition(String className,String beanClassName) {
+		MyBeanDefinition beanDefinition=new MyBeanDefinition();
+		beanDefinition.setBeanClassName(beanClassName);
+		beanDefinition.setFactoryBeanName(className);
+		return  beanDefinition;
+		//有可能是接口，对其实现类进行处理，用其实现类作为BeanClassName
+
 	}
 	private String  toLowerFirstCase(String simpleName) {
 		char[] chars=simpleName.toCharArray();

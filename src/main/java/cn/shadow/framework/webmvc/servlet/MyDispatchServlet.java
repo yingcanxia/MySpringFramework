@@ -29,7 +29,7 @@ public class MyDispatchServlet extends HttpServlet{
 	private MyApplicationContext context;
 	private List<HandlerMapping>handlerMappings=new ArrayList<HandlerMapping>();
 	private Map<HandlerMapping,HandlerAdapter>handlerAdapters=new HashMap<HandlerMapping, HandlerAdapter>();
-	private List<MyViewResolvers>viewResolvers;
+	private List<MyViewResolvers>viewResolvers= new ArrayList<MyViewResolvers>();;
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -141,7 +141,7 @@ public class MyDispatchServlet extends HttpServlet{
 	private void initViewResolvers(MyApplicationContext context) {
 		// TODO Auto-generated method stub
 		//拿到一个模板存放目录 
-		String templateRoot=context.getConfig().getProperty("");
+		String templateRoot=context.getConfig().getProperty("templateRoot");
 		String templateRootPath=this.getClass().getClassLoader().getResource(templateRoot).getFile();
 		File templateRootDir=new File(templateRootPath);
 		for (File file : templateRootDir.listFiles()) {

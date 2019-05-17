@@ -14,13 +14,13 @@ import cn.shadow.framework.aop.JdkDynamicAopProxy;
 import cn.shadow.framework.aop.MyAopProxy;
 import cn.shadow.framework.aop.config.MyAopConfig;
 import cn.shadow.framework.aop.support.MyAdvisedSupport;
-import cn.shadow.framework.beans.MyBeanFactory;
 import cn.shadow.framework.beans.MyBeanWrapper;
 import cn.shadow.framework.beans.config.MyBeanDefinition;
 import cn.shadow.framework.beans.config.MyBeanPostProcessor;
 import cn.shadow.framework.beans.support.MyBeanDefinitionReader;
 import cn.shadow.framework.beans.support.MyDefaultListableBeanFactory;
 import cn.shadow.framework.context.support.MyAbstractApplicationContext;
+import cn.shadow.framework.core.MyBeanFactory;
 
 /**
  * 按照代码分析套路 IOC>DI>MVC>AOP
@@ -171,12 +171,9 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		//2
 		List<MyBeanDefinition> beanDefinitions=reader.loadBeanDefinitions();
 		//3
-		try {
-			doRegisterBeanDefinition(beanDefinitions);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
+		doRegisterBeanDefinition(beanDefinitions);
+		
 		//4
 		doAutoWrited();
 	}
@@ -199,11 +196,11 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		/*super.BeanDefinitionMap.entrySet()*/
 	}
 
-	private void doRegisterBeanDefinition(List<MyBeanDefinition> beanDefinitions) throws Exception {
+	private void doRegisterBeanDefinition(List<MyBeanDefinition> beanDefinitions) {
 		// TODO Auto-generated method stub
 		for(MyBeanDefinition beanDefinition:beanDefinitions) {
 			if(super.beanDefinitionMap.containsKey(beanDefinition.getFactoryBeanName())) {
-				throw new Exception("The “" + beanDefinition.getFactoryBeanName() + "” is exists!!");
+				System.out.println("The “" + beanDefinition.getFactoryBeanName() + "” is exists!!");
 			}
 			super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
 		}
