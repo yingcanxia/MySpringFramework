@@ -15,6 +15,6 @@ public class MyBeanWrapper {
 	}
 	//如果不是单例将从本方法中new对象出来
 	public Class<?> getWrappedClass() {
-		return this.wrappedClass;
+		return this.wrappedInstance.getClass();
 	}
 }

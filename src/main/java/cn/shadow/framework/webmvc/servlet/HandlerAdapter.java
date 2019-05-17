@@ -51,12 +51,12 @@ public class HandlerAdapter {
 		for (Map.Entry<String, String[]> parm : params.entrySet()) {
 			//将数组化解
 			String value =Arrays.toString(parm.getValue()).replaceAll("\\[|\\]", "").replaceAll("\\s", ",");
-			if(!handlerMapping.paramIndexMapping.containsKey(parm.getKey())) {
+			if(!paramIndexMapping.containsKey(parm.getKey())) {
 				//如果没有对应的key值这跳出
 				continue;
 			}
 			//依照方法的参数类型列表将值春芳在列表
-			int index=handlerMapping.paramIndexMapping.get(parm.getKey());
+			int index=paramIndexMapping.get(parm.getKey());
 			paramValues[index]=caseStringValue(paramTypes[index], value);
 		}
 		//调用找到的方法去执行
@@ -75,23 +75,32 @@ public class HandlerAdapter {
 			return null;
 			//正常返回
 		}
-		if(handlerMapping.getMethod().getReturnType()==MyModleAndView.class) {
+		boolean isModelAndView = handlerMapping.getMethod().getReturnType() == MyModleAndView.class;
+
+		if(isModelAndView) {
 			return (MyModleAndView) result;
 		}
 		
 		return null;
 	}
-	private Object caseStringValue(Class<?> class1, String value) {
+	private Object caseStringValue(Class<?> paramsType, String value) {
 		// TODO Auto-generated method stub
 		//类型转化
-				if(Integer.class==class1) {
-					return Integer.valueOf(value);
-				}else if(String.class==class1) {
-					value.replaceAll("\\[\\]", "").replaceAll("\\s", "");
-					return value;
-				}
-				//这里应该使用策略模式
+		if(String.class == paramsType){
+			return value;
+		}
+		//如果是int
+		if(Integer.class == paramsType){
+			return Integer.valueOf(value);
+		}
+		else if(Double.class == paramsType){
+			return Double.valueOf(value);
+		}else {
+			if(value != null){
 				return value;
+			}
+			return null;
+		}
 	}
 	
 }

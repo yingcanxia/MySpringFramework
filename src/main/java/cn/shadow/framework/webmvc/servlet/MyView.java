@@ -31,7 +31,7 @@ public class MyView {
 			
 			while(matcher.find()) {
 				String paramName=matcher.group();
-				paramName=paramName.replaceAll("$\\{|\\}","");
+				paramName=paramName.replaceAll("гд\\{|\\}","");
 				Object paramValue=model.get(paramName);
 				if(null==paramValue) {
 					continue;
@@ -46,7 +46,7 @@ public class MyView {
 		
 		
 		response.setCharacterEncoding("utf-8");
-		response.setContentType(DEFAULT_CONTENT_TYPE);
+		//response.setContentType(DEFAULT_CONTENT_TYPE);
 		response.getWriter().write(sb.toString());
 	}
 	private static String makeStringForRegExp(String str) {

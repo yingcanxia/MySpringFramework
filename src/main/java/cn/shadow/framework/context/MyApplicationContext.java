@@ -84,7 +84,7 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		// TODO Auto-generated method stub
 		Object instance=beanWrapper.getWappedInstance();
 		//判断只有加了注解的类才执行依赖注入
-		Class<?> clazz=beanWrapper.getClass();
+		Class<?> clazz=beanWrapper.getWrappedClass();
 		if(!(clazz.isAnnotationPresent(MyController.class)||clazz.isAnnotationPresent(MyService.class))) {
 			return;
 		}
@@ -104,7 +104,7 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 			field.setAccessible(true);
 			try {
 				//get这里是null
-				if(instance==null||this.factoryBeanInstanceCache.get(autowiredBeanName)==null) {
+				if(this.factoryBeanInstanceCache.get(autowiredBeanName)==null) {
 					continue;
 				}
 				field.set(instance, this.factoryBeanInstanceCache.get(autowiredBeanName).getWappedInstance());

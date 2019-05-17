@@ -1,0 +1,11 @@
+本工程是对spring的简单仿写
+首先通过web.xml文件定义启动的类与配置文件
+读取配置文件配置文件中定义了本框架扫描的包，视图模板的包，以及面向切面的相关定义内容
+注：框架扫描的包是含有业务逻辑的包和类，而不是框架自身
+启动流程：
+1、通过web.xml进入MVC模块的MyDispatchServlet类并执行init()方法
+2、init()方法会启动spring的主容器也就是常用的context
+3、容器进入初始化阶段：
+	1.读取配置文件。通过MyBeanDefinitionReader类进行类的读取
+	2.将业务包里的东西封装成MyBeanDefinition方便实例化并进入容器。如果是接口的话则不能实例化
+	3.将获取的类以<String,MyBeanDefinition>的形式进行注册
