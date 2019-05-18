@@ -20,7 +20,7 @@ public class MyAdvisedSupport {
 	private Object target;
 	private MyAopConfig config;
 	private Pattern pointCutClassPattern;
-	private Map<Method,List<Object>>methodCache;
+	private transient Map<Method,List<Object>>methodCache;
 	public MyAdvisedSupport(MyAopConfig config) {
 		// TODO Auto-generated constructor stub
 		this.config=config;
@@ -30,7 +30,7 @@ public class MyAdvisedSupport {
 		List<Object>cached=methodCache.get(method);
 		if(cached==null) {
 			Method m=targetClass.getMethod(method.getName(), method.getParameterTypes());
-			cached.add(m);
+			cached = methodCache.get(m);
 			this.methodCache.put(m,cached);
 		}
 		return cached;
@@ -67,10 +67,9 @@ public class MyAdvisedSupport {
 		/* pointCut=public .* cn.shadow.service..*service..*(.*) */
 		String pointCutForClassRegex=poingCut.substring(0,poingCut.lastIndexOf("\\(")-4);
 		pointCutClassPattern=Pattern.compile("class "+pointCutForClassRegex.substring(pointCutForClassRegex.lastIndexOf(" ")+1));
-		Pattern pattern=Pattern.compile(poingCut);
-		
-		methodCache=new HashMap<Method, List<Object>>();
 		try {
+			methodCache=new HashMap<Method, List<Object>>();
+			Pattern pattern=Pattern.compile(poingCut);
 			Class aspectClass = Class.forName(this.config.getAspectClass());
 			Map<String, Method>aspectMethods=new HashMap<String, Method>();
 			for (Method method:aspectClass.getMethods()) {
@@ -85,7 +84,6 @@ public class MyAdvisedSupport {
 				if(matcher.matches()) {
 					//执行器链
 					List<Object>advices=new LinkedList<Object>();
-					
 					//把每一个方法包装成methodIterceptor
 					//1.before
 					if(null!=config.getAspectBefore()&&!"".equals(config.getAspectBefore())) {

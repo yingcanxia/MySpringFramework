@@ -33,7 +33,7 @@ public class MyAction {
 	@MyRequestMapping("/query.json")
 	public MyModleAndView query(HttpServletRequest request, HttpServletResponse response,
 								@MyRequestParam("name") String name){
-		String result = queryService.query(name);
+		String result = modifyService.edit(1,"ssdf");
 		return out(response,result);
 	}
 	

@@ -1,20 +1,36 @@
 package cn.shadow.user.aspect;
 
-import cn.shadow.framework.aop.aspect.MyJoinPoint;
 
+import java.util.Arrays;
+
+import cn.shadow.framework.aop.aspect.MyJoinPoint;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class LogAspect {
 	
-	public void before() {
+	public void before(MyJoinPoint joinPoint) {
 		//往对象里记录调用开始时间
-		System.out.println("invoke method before");
+		joinPoint.setUserAttribute("startTime_" + joinPoint.getMethod().getName(),System.currentTimeMillis());
+        //这个方法中的逻辑，是由我们自己写的
+        log.info("Invoker Before Method!!!" +
+                "\nTargetObject:" +  joinPoint.getThis() +
+                "\nArgs:" + Arrays.toString(joinPoint.getArguments()));
 	}
 	
-	public void after() {
+	public void after(MyJoinPoint joinPoint) {
 		//往对象里记录调用结束时间
-		System.out.println("invoke method after");
+		log.info("Invoker After Method!!!" +
+                "\nTargetObject:" +  joinPoint.getThis() +
+                "\nArgs:" + Arrays.toString(joinPoint.getArguments()));
+        long startTime = (Long) joinPoint.getUserAttribute("startTime_" + joinPoint.getMethod().getName());
+        long endTime = System.currentTimeMillis();
+        System.out.println("use time :" + (endTime - startTime));
 	}
 	
-	public void afterThrowing() {
-		
+	public void afterThrowing(MyJoinPoint joinPoint, Throwable ex) {
+		 log.info("出现异常" +
+	                "\nTargetObject:" +  joinPoint.getThis() +
+	                "\nArgs:" + Arrays.toString(joinPoint.getArguments()) +
+	                "\nThrows:" + ex.getMessage());
 	}
 }
