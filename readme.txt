@@ -5,7 +5,21 @@
 启动流程：
 1、通过web.xml进入MVC模块的MyDispatchServlet类并执行init()方法
 2、init()方法会启动spring的主容器也就是常用的context
-3、容器进入初始化阶段：
+3、容器进入初始化阶段：i进入MyApplication的refresh()方法
 	1.读取配置文件。通过MyBeanDefinitionReader类进行类的读取
-	2.将业务包里的东西封装成MyBeanDefinition方便实例化并进入容器。如果是接口的话则不能实例化
-	3.将获取的类以<String,MyBeanDefinition>的形式进行注册
+	2.将业务包里的东西，封装成MyBeanDefinition方便实例化并进入容器。如果是接口的话则不能实例化
+	3将获取的类以<String,MyBeanDefinition>的形式进行注册
+	4.进入自动注入方法doAutoWrited()
+4、由doAutoWrited()方法进入getbean()方法进行类的具体实例化，注入以及面向切面的织入
+5、在getBean()方法中通过instantiateBean()方法
+6、instantiateBean()方法中获取类名并且通过反射进行实例化，并且判断该类是否是切点是切点的话则通过jdk的动态代理，然后将父类beanDefinitionMap中注册的类转移至singlettonObject单例容器之中此时在单例容器中的已经是实体对象了不再是类了
+7、由instantiateBean()方法回到getBean()方法中后将类的实体转化成MyBeanWrapper类。该类主要存储实例以及实例对应的类名
+8、将MyBeanWrapper存入通用的容器之中
+9、进行依赖注入：
+	1.获取MyBeanWrapper中的实例与实例对应的类
+	2.检查类的注释类型如果有@MyController或者@MyService注释则进行注释
+	3.检查该类的变量有没有@MyAutowired注释的变量
+	4.设置该类字段的可访问性，并将service层的实例注入进入controller层的实例
+10、返回实例完成容器的初始化，返回MyDispatchServlet的init()方法
+11、初始化仿写springMVC的初始化方法初始化所谓的9大组件
+12、获取所有的控制层handler，initHandlerMappings()
