@@ -16,9 +16,9 @@ public class MyMethodInvocation implements MyJoinPoint{
 	private List<Object>interceptorsAndDynamicMethodMatchers;
 	private Class<?>targetClass;
 	private Map<String,Object>userAttributes;
-	//¶¨ÒåÒ»¸öË÷Òı£¬´Ó-1¿ªÊ¼À´¼ÇÂ¼µ±Ç°À¹½ØÆ÷Ö´ĞĞµÄÎ»ÖÃ
+	//å®šä¹‰ä¸€ä¸ªç´¢å¼•ï¼Œä»-1å¼€å§‹æ¥è®°å½•å½“å‰æ‹¦æˆªå™¨æ‰§è¡Œçš„ä½ç½®
 	private int currentInterceptorIndex=-1;
-	//À¹½ØÆ÷Á´µ÷ÓÃ¹ı³Ì
+	//æ‹¦æˆªå™¨é“¾è°ƒç”¨è¿‡ç¨‹
 	public MyMethodInvocation(
 			Object proxy,Object target,Method method,Object[] arguments,
 			Class<?> targetClass,List<Object>interceptorsAndDynamicMethodMatchers) {
@@ -31,7 +31,7 @@ public class MyMethodInvocation implements MyJoinPoint{
 	}
 	
 	public Object proceed()throws Throwable{
-		//Èç¹ûÕû¸öÖ´ĞĞÁ´Ö´ĞĞÍê³Éºó
+		//å¦‚æœæ•´ä¸ªæ‰§è¡Œé“¾æ‰§è¡Œå®Œæˆå
 		if(this.currentInterceptorIndex==this.interceptorsAndDynamicMethodMatchers.size()-1) {
 			return this.method.invoke(this.target, this.arguments);
 		}
@@ -40,7 +40,7 @@ public class MyMethodInvocation implements MyJoinPoint{
 			MyMethodInterceptor mi=(MyMethodInterceptor)interceptorOrInterceptionAdvice;
 			return mi.invoke(this);
 		}else {
-			//¶¯Ì¬Æ¥ÅäÊ§°ÜÊ±£¬ÂÓ¹ıµ±Ç°À¹½ØÆ÷µ÷ÓÃÏÂÒ»¸ö
+			//åŠ¨æ€åŒ¹é…å¤±è´¥æ—¶ï¼Œæ è¿‡å½“å‰æ‹¦æˆªå™¨è°ƒç”¨ä¸‹ä¸€ä¸ª
 			return proceed();
 		}
 	}

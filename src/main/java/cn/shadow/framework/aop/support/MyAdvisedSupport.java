@@ -25,7 +25,7 @@ public class MyAdvisedSupport {
 		// TODO Auto-generated constructor stub
 		this.config=config;
 	}
-	//»ñÈ¡Ö´ĞĞÁ´¡£ÒÔmethod×÷ÎªkeyÖµ
+	//è·å–æ‰§è¡Œé“¾ã€‚ä»¥methodä½œä¸ºkeyå€¼
 	public List<Object>getInterceptorsAndDynamicInterceptionAdvice(Method method,Class<?>targetClass) throws Exception{
 		List<Object>cached=methodCache.get(method);
 		if(cached==null) {
@@ -82,23 +82,23 @@ public class MyAdvisedSupport {
 				}
 				Matcher matcher=pattern.matcher(strMethod);
 				if(matcher.matches()) {
-					//Ö´ĞĞÆ÷Á´
+					//æ‰§è¡Œå™¨é“¾
 					List<Object>advices=new LinkedList<Object>();
-					//°ÑÃ¿Ò»¸ö·½·¨°ü×°³ÉmethodIterceptor
+					//æŠŠæ¯ä¸€ä¸ªæ–¹æ³•åŒ…è£…æˆmethodIterceptor
 					//1.before
 					if(null!=config.getAspectBefore()&&!"".equals(config.getAspectBefore())) {
-						//´´½¨Ò»¸öadvise¶ÔÏó
-						//ÓĞÇ°ÖÃÍ¨Öª±ä³ÉÁËÇ°ÖÃÀ¹½ØÆ÷
+						//åˆ›å»ºä¸€ä¸ªadviseå¯¹è±¡
+						//æœ‰å‰ç½®é€šçŸ¥å˜æˆäº†å‰ç½®æ‹¦æˆªå™¨
 						advices.add(new MyMethodBeforeAdviceInterceptor(aspectMethods.get(config.getAspectBefore()),aspectClass.newInstance()));
 					}
 					//2.after
 					if(null!=config.getAspectAfter()&&!"".equals(config.getAspectAfter())) {
-						//´´½¨Ò»¸öadvise¶ÔÏó
+						//åˆ›å»ºä¸€ä¸ªadviseå¯¹è±¡
 						advices.add(new MyAfterReturningAdviceInterceptor(aspectMethods.get(config.getAspectAfter()),aspectClass.newInstance()));
 					}
 					//3.afterThrowing 
 					if(null!=config.getAspectAfterThrow()&&!"".equals(config.getAspectAfterThrow())) {
-						//´´½¨Ò»¸öadvise¶ÔÏó
+						//åˆ›å»ºä¸€ä¸ªadviseå¯¹è±¡
 						MyAfterThrowingAdviceInterceptor throwingAdviceInterceptor=
 								new MyAfterThrowingAdviceInterceptor(aspectMethods.get(config.getAspectAfterThrow()),aspectClass.newInstance());
 						throwingAdviceInterceptor.setThrowingName(config.getAspectAfterThrowingName());
