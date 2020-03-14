@@ -9,16 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 public class LogAspect {
 	
 	public void before(MyJoinPoint joinPoint) {
-		//Íù¶ÔÏóÀï¼ÇÂ¼µ÷ÓÃ¿ªÊ¼Ê±¼ä
+		//å¾€å¯¹è±¡é‡Œè®°å½•è°ƒç”¨å¼€å§‹æ—¶é—´
 		joinPoint.setUserAttribute("startTime_" + joinPoint.getMethod().getName(),System.currentTimeMillis());
-        //Õâ¸ö·½·¨ÖĞµÄÂß¼­£¬ÊÇÓÉÎÒÃÇ×Ô¼ºĞ´µÄ
+        //è¿™ä¸ªæ–¹æ³•ä¸­çš„é€»è¾‘ï¼Œæ˜¯ç”±æˆ‘ä»¬è‡ªå·±å†™çš„
         log.info("Invoker Before Method!!!" +
                 "\nTargetObject:" +  joinPoint.getThis() +
                 "\nArgs:" + Arrays.toString(joinPoint.getArguments()));
 	}
 	
 	public void after(MyJoinPoint joinPoint) {
-		//Íù¶ÔÏóÀï¼ÇÂ¼µ÷ÓÃ½áÊøÊ±¼ä
+		//å¾€å¯¹è±¡é‡Œè®°å½•è°ƒç”¨ç»“æŸæ—¶é—´
 		log.info("Invoker After Method!!!" +
                 "\nTargetObject:" +  joinPoint.getThis() +
                 "\nArgs:" + Arrays.toString(joinPoint.getArguments()));
@@ -28,7 +28,7 @@ public class LogAspect {
 	}
 	
 	public void afterThrowing(MyJoinPoint joinPoint, Throwable ex) {
-		 log.info("³öÏÖÒì³£" +
+		 log.info("å‡ºç°å¼‚å¸¸" +
 	                "\nTargetObject:" +  joinPoint.getThis() +
 	                "\nArgs:" + Arrays.toString(joinPoint.getArguments()) +
 	                "\nThrows:" + ex.getMessage());

@@ -1,7 +1,7 @@
 package cn.shadow.framework.context.support;
 
 public abstract class MyAbstractApplicationContext {
-	//×îÉÙÖªµÀÔ­Ôò£¬Ö»Ìá¹©¸ø×ÓÀàÈ¥ÖØĞ´
+	//æœ€å°‘çŸ¥é“åŸåˆ™ï¼Œåªæä¾›ç»™å­ç±»å»é‡å†™
 	public void refresh() {
 		
 	}

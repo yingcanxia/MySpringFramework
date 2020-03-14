@@ -15,7 +15,7 @@ public class MyMethodBeforeAdviceInterceptor extends MyAbstractAspectAdvice impl
 	}
 
 	public void before(Method method,Object[] args,Object target)throws Throwable {
-		//½«ÕâÐ©¶«Î÷´©¸ö
+		//å°†è¿™äº›ä¸œè¥¿ç©¿ä¸ª
 		//method.invoke(target);
 		super.invokeadviceMethod(this.joinPoint,null,null);
 	}

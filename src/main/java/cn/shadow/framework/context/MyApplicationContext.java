@@ -23,16 +23,16 @@ import cn.shadow.framework.context.support.MyAbstractApplicationContext;
 import cn.shadow.framework.core.MyBeanFactory;
 
 /**
- * °´ÕÕ´úÂë·ÖÎöÌ×Â· IOC>DI>MVC>AOP
+ * æŒ‰ç…§ä»£ç åˆ†æå¥—è·¯ IOC>DI>MVC>AOP
  * @author notto
  *
  */
 public class MyApplicationContext extends MyDefaultListableBeanFactory implements MyBeanFactory{
 	private String[]configLocayions;
 	private MyBeanDefinitionReader reader;
-	//µ¥ÀıÄ£Ê½µÄIOCÈİÆ÷»º´æ
+	//å•ä¾‹æ¨¡å¼çš„IOCå®¹å™¨ç¼“å­˜
 	private Map<String,Object>singlettonObject=new ConcurrentHashMap<String, Object>();
-	//ËùÓĞµÄÈİÆ÷£ºÍ¨ÓÃIOC
+	//æ‰€æœ‰çš„å®¹å™¨ï¼šé€šç”¨IOC
 	private Map<String,MyBeanWrapper> factoryBeanInstanceCache=new ConcurrentHashMap<String, MyBeanWrapper>();
 	
 	public MyApplicationContext(String... configLocayions) {
@@ -52,8 +52,8 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 	
 	public Object getBean(String beanName) throws Exception {
 		// TODO Auto-generated method stub
-		//Îª·ÀÖ¹Ñ­»·ÒÀÀµµÄÇé¿ö½«³õÊ¼»¯ºÍ×¢Èë·½·¨²ğ·Ö¡£·ÀÖ¹ÏÈÓĞ¼¦»¹ÊÇÏÈÓĞµ°µÄÎÊÌâ
-		//1:³õÊ¼»¯
+		//ä¸ºé˜²æ­¢å¾ªç¯ä¾èµ–çš„æƒ…å†µå°†åˆå§‹åŒ–å’Œæ³¨å…¥æ–¹æ³•æ‹†åˆ†ã€‚é˜²æ­¢å…ˆæœ‰é¸¡è¿˜æ˜¯å…ˆæœ‰è›‹çš„é—®é¢˜
+		//1:åˆå§‹åŒ–
 		MyBeanDefinition beanDefinition=this.beanDefinitionMap.get(beanName);
 		MyBeanPostProcessor postProcessor=new MyBeanPostProcessor();
 		Object instance=null;
@@ -63,17 +63,17 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		beanDefinition.setFactoryBeanName(beanName);*/
 		MyBeanWrapper beanWrapper=new MyBeanWrapper(instance); 
 		
-		//´´½¨Ò»¸ö´úÀíµÄ²ßÂÔ,ÊÇÍ¨¹ıjdk»¹ÊÇCglib²¢·µ»ØÊµÀı
+		//åˆ›å»ºä¸€ä¸ªä»£ç†çš„ç­–ç•¥,æ˜¯é€šè¿‡jdkè¿˜æ˜¯Cglibå¹¶è¿”å›å®ä¾‹
 		/*
-		 * MyAopProxy aopProxy; //Í¨¹ı´úÀíÊµÀı·µ»Ø±»´úÀí¶ÔÏó Object proxy=aopProxy.getProxy(); proxy
+		 * MyAopProxy aopProxy; //é€šè¿‡ä»£ç†å®ä¾‹è¿”å›è¢«ä»£ç†å¯¹è±¡ Object proxy=aopProxy.getProxy(); proxy
 		 */
 		/* MyBeanWrapper beanWrapper=instantiateBean(beanName,beanDefinition); */
-		//2£ºÄÃµ½beanwrapperÖ®ºó£¬½«Æä±£´æµ½IOCÈİÆ÷Ö®ºó
+		//2ï¼šæ‹¿åˆ°beanwrapperä¹‹åï¼Œå°†å…¶ä¿å­˜åˆ°IOCå®¹å™¨ä¹‹å
 		
 		this.factoryBeanInstanceCache.put(beanName, beanWrapper);
 		
 		postProcessor.postProcessAfterInitializetion(instance, beanName);
-		//3£º×¢Èë
+		//3ï¼šæ³¨å…¥
 		populateBean(beanName,new MyBeanDefinition(),beanWrapper);
 		
 		
@@ -83,12 +83,12 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 	private void populateBean(String beanName,MyBeanDefinition beanDefinition,MyBeanWrapper beanWrapper) {
 		// TODO Auto-generated method stub
 		Object instance=beanWrapper.getWappedInstance();
-		//ÅĞ¶ÏÖ»ÓĞ¼ÓÁË×¢½âµÄÀà²ÅÖ´ĞĞÒÀÀµ×¢Èë
+		//åˆ¤æ–­åªæœ‰åŠ äº†æ³¨è§£çš„ç±»æ‰æ‰§è¡Œä¾èµ–æ³¨å…¥
 		Class<?> clazz=beanWrapper.getWrappedClass();
 		if(!(clazz.isAnnotationPresent(MyController.class)||clazz.isAnnotationPresent(MyService.class))) {
 			return;
 		}
-		//»ñµÃËùÓĞµÄfields
+		//è·å¾—æ‰€æœ‰çš„fields
 		Field[] fields= clazz.getDeclaredFields();
 		for(Field field:fields) {
 			if(!field.isAnnotationPresent(MyAutowired.class)) {
@@ -97,13 +97,13 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 			MyAutowired autowired=field.getAnnotation(MyAutowired.class);
 			String autowiredBeanName=autowired.value().trim();
 			if("".equals(autowiredBeanName)) {
-				//Ã»ÓĞÉèÖÃµÄÇé¿öÏÂÊ¹ÓÃÀàĞÍ×¢Èë
+				//æ²¡æœ‰è®¾ç½®çš„æƒ…å†µä¸‹ä½¿ç”¨ç±»å‹æ³¨å…¥
 				autowiredBeanName=field.getType().getName();
 			}
-			//Ç¿ÖÆ·ÃÎÊ
+			//å¼ºåˆ¶è®¿é—®
 			field.setAccessible(true);
 			try {
-				//getÕâÀïÊÇnull
+				//getè¿™é‡Œæ˜¯null
 				if(this.factoryBeanInstanceCache.get(autowiredBeanName)==null) {
 					continue;
 				}
@@ -119,13 +119,13 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 	}
 
 	private Object instantiateBean(String beanName,MyBeanDefinition beanDefinition) {
-		//ÄÃµ½ÒªÊµÀı»¯µÄ¶ÔÏóµÄÀàÃû
+		//æ‹¿åˆ°è¦å®ä¾‹åŒ–çš„å¯¹è±¡çš„ç±»å
 		String className=beanDefinition.getBeanClassName();
-		//¶ÔÀàÃû½øĞĞ·´ÉäÊµÀı»¯
+		//å¯¹ç±»åè¿›è¡Œåå°„å®ä¾‹åŒ–
 		Object instance=null;
 		try {
 			
-			//Ä¬ÈÏËû¾ÍÊÇµ¥ÀıÄ£Ê½
+			//é»˜è®¤ä»–å°±æ˜¯å•ä¾‹æ¨¡å¼
 			if(this.singlettonObject.containsKey(className)) {
 				instance=this.singlettonObject.get(className);
 			}else {
@@ -135,21 +135,21 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 				config.setTargetClass(clazz);
 				config.setTarget(instance);
 				
-				//Èç¹û·ûºÏPointCut¹æÔòÔò±íÃ÷ÊÇ´úÀí
+				//å¦‚æœç¬¦åˆPointCutè§„åˆ™åˆ™è¡¨æ˜æ˜¯ä»£ç†
 				if(config.pointCut()) {
 					instance=createProxy(config).getProxy();
 				}
 				
-				//¸ù¾İÃû×Ö
+				//æ ¹æ®åå­—
 				this.singlettonObject.put(className, instance);
-				//¸ù¾İÀàĞÍ
+				//æ ¹æ®ç±»å‹
 				this.singlettonObject.put(beanDefinition.getFactoryBeanName(), instance);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//µÃµ½¶ÔÏó ½«¶ÔÏó·â×°µ½beanwrapperÖĞ °Ñ±¸°¸wrapper´æÈëiocÈİÆ÷Ö®ÖĞ
+		//å¾—åˆ°å¯¹è±¡ å°†å¯¹è±¡å°è£…åˆ°beanwrapperä¸­ æŠŠå¤‡æ¡ˆwrapperå­˜å…¥iocå®¹å™¨ä¹‹ä¸­
 		/* MyBeanWrapper beanWrapper=new MyBeanWrapper(instance); */
 		// TODO Auto-generat ed method stub
 		return instance;
@@ -160,11 +160,11 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 	@Override
 	public void refresh() {
 		// TODO Auto-generated method stub
-		//³õÊ¼»¯´ÓÕâÀï¿ªÊ¼
-		/*1£º¶¨Î»ÅäÖÃÎÄ¼ş
-		 * 2£º¼ÓÔØÅäÖÃÎÄ¼ş£¬ÅäÖÃÏà¹ØµÄÀÛ¡£°ÑËûÃÇ·â×°³ÉBeanDedinition
-		 * 3£º×¢²á£¬°ÑÅäÖÃĞÅÏ¢·Åµ½ÈİÆ÷ÄÚ£¨Î±IOC£©
-		 * 4£º°Ñ²»ÊÇÑÓÊ±¼ÓÔØµÄÀàÌáÇ°³õÊ¼»¯
+		//åˆå§‹åŒ–ä»è¿™é‡Œå¼€å§‹
+		/*1ï¼šå®šä½é…ç½®æ–‡ä»¶
+		 * 2ï¼šåŠ è½½é…ç½®æ–‡ä»¶ï¼Œé…ç½®ç›¸å…³çš„ç´¯ã€‚æŠŠä»–ä»¬å°è£…æˆBeanDedinition
+		 * 3ï¼šæ³¨å†Œï¼ŒæŠŠé…ç½®ä¿¡æ¯æ”¾åˆ°å®¹å™¨å†…ï¼ˆä¼ªIOCï¼‰
+		 * 4ï¼šæŠŠä¸æ˜¯å»¶æ—¶åŠ è½½çš„ç±»æå‰åˆå§‹åŒ–
 		 */
 		//1
 		reader=new MyBeanDefinitionReader(this.configLocayions);
@@ -178,7 +178,7 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		doAutoWrited();
 	}
 
-	//Ö»´¦Àí·ÇÑÓÊ±¼ÓÔØµÄÇé¿ö
+	//åªå¤„ç†éå»¶æ—¶åŠ è½½çš„æƒ…å†µ
 	private void doAutoWrited() {
 		// TODO Auto-generated method stub
 		for(Map.Entry<String , MyBeanDefinition>beanDefinitionRntry:super.beanDefinitionMap.entrySet()) {
@@ -200,7 +200,7 @@ public class MyApplicationContext extends MyDefaultListableBeanFactory implement
 		// TODO Auto-generated method stub
 		for(MyBeanDefinition beanDefinition:beanDefinitions) {
 			if(super.beanDefinitionMap.containsKey(beanDefinition.getFactoryBeanName())) {
-				System.out.println("The ¡°" + beanDefinition.getFactoryBeanName() + "¡± is exists!!");
+				System.out.println("The â€œ" + beanDefinition.getFactoryBeanName() + "â€ is exists!!");
 			}
 			super.beanDefinitionMap.put(beanDefinition.getFactoryBeanName(), beanDefinition);
 		}

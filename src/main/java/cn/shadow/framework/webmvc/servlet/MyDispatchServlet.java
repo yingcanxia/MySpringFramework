@@ -47,7 +47,7 @@ public class MyDispatchServlet extends HttpServlet{
 
 	private void doDispatcher(HttpServletRequest req, HttpServletResponse resp) {
 		// TODO Auto-generated method stub
-		//µÚÒ»²½£ºgetHandler
+		//ç¬¬ä¸€æ­¥ï¼šgetHandler
 		try {
 			HandlerMapping handler =getHandler(req);
 			if(handler==null) {
@@ -56,11 +56,11 @@ public class MyDispatchServlet extends HttpServlet{
 				return;
 			}
 			
-			//µÚ¶ş²¿£ºgetAdapter
-			//×¼±¸ºÃµ÷ÓÃÇ°µÄ²ÎÊı
+			//ç¬¬äºŒéƒ¨ï¼šgetAdapter
+			//å‡†å¤‡å¥½è°ƒç”¨å‰çš„å‚æ•°
 			HandlerAdapter ha=getHandlerAdapter(handler);
-			//µÚÈı²¿£º´¦Àí½á¹û,²¢ÕæÕıµÄµ÷ÓÃ·½·¨
-			//´æ´¢Òª´«µ½Ò³ÃæÉÏµÄÖµ£¬ºÍ¾ßÌåÒª×ßÄÇ¸öÒ³Ãæ
+			//ç¬¬ä¸‰éƒ¨ï¼šå¤„ç†ç»“æœ,å¹¶çœŸæ­£çš„è°ƒç”¨æ–¹æ³•
+			//å­˜å‚¨è¦ä¼ åˆ°é¡µé¢ä¸Šçš„å€¼ï¼Œå’Œå…·ä½“è¦èµ°é‚£ä¸ªé¡µé¢
 			MyModleAndView mv=ha.handle(req,resp,handler);
 			
 			
@@ -76,7 +76,7 @@ public class MyDispatchServlet extends HttpServlet{
 	
 	private void processDispatchResult(HttpServletRequest req, HttpServletResponse resp, MyModleAndView mv) {
 		// TODO Auto-generated method stub
-		//°ÑModleAndView×ª»¯³ÉĞèÒªµÄ¸ñÊ½ÀıÈçjsp£¬html£¬json
+		//æŠŠModleAndViewè½¬åŒ–æˆéœ€è¦çš„æ ¼å¼ä¾‹å¦‚jspï¼Œhtmlï¼Œjson
 		
 		if(null==mv){
 			return;
@@ -103,33 +103,33 @@ public class MyDispatchServlet extends HttpServlet{
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		// TODO Auto-generated method stub
-		//ÕâÀï»áÓĞÒ»¶¨Çø±ğ
-		//³õÊ¼»¯applicationcontext
+		//è¿™é‡Œä¼šæœ‰ä¸€å®šåŒºåˆ«
+		//åˆå§‹åŒ–applicationcontext
 		context=new MyApplicationContext(config.getInitParameter(CONTEXT_CONFIG_LOCATION));
-		//³õÊ¼»¯¾Å´ó×é¼ş
+		//åˆå§‹åŒ–ä¹å¤§ç»„ä»¶
 		initStrategies(context);
 	}
 	protected void initStrategies(MyApplicationContext context) {
 		
 		
-		//³õÊ¼»¯9´ó×é¼ş
-		//¶àÎÄ¼şÉÏ´«×é¼ş
+		//åˆå§‹åŒ–9å¤§ç»„ä»¶
+		//å¤šæ–‡ä»¶ä¸Šä¼ ç»„ä»¶
 		initMultipartResolver(context);
-		//³õÊ¼»¯±¾µØÓïÑÔºÍ»·¾³
+		//åˆå§‹åŒ–æœ¬åœ°è¯­è¨€å’Œç¯å¢ƒ
 		initLocaleResolver(context);
-		//³õÊ¼»¯Ä£°å´¦ÀíÆ÷
+		//åˆå§‹åŒ–æ¨¡æ¿å¤„ç†å™¨
 		initThemeResolver(context);
-		//³õÊ¼»¯handlerMapping
+		//åˆå§‹åŒ–handlerMapping
 		initHandlerMappings(context);
-		//³õÊ¼»¯²ÎÊıÊÊÅäÆ÷
+		//åˆå§‹åŒ–å‚æ•°é€‚é…å™¨
 		initHandlerAdapters(context);
-		//³õÊ¼»¯Òì³£À¹½ØÆ÷
+		//åˆå§‹åŒ–å¼‚å¸¸æ‹¦æˆªå™¨
 		initHandlerExceptionResolvers(context);
-		//³õÊ¼»¯ÊÓÍ¼Ô¤´¦ÀíÆ÷
+		//åˆå§‹åŒ–è§†å›¾é¢„å¤„ç†å™¨
 		initRequestToViewNameTranslator(context);
-		//³õÊ¼»¯ÊÓÍ¼×ª»»Æ÷
+		//åˆå§‹åŒ–è§†å›¾è½¬æ¢å™¨
 		initViewResolvers(context);
-		//³õÊ¼»¯²ÎÊı»º´æÆ÷
+		//åˆå§‹åŒ–å‚æ•°ç¼“å­˜å™¨
 		initFlashMapManager(context);
 	}
 
@@ -140,7 +140,7 @@ public class MyDispatchServlet extends HttpServlet{
 
 	private void initViewResolvers(MyApplicationContext context) {
 		// TODO Auto-generated method stub
-		//ÄÃµ½Ò»¸öÄ£°å´æ·ÅÄ¿Â¼ 
+		//æ‹¿åˆ°ä¸€ä¸ªæ¨¡æ¿å­˜æ”¾ç›®å½• 
 		String templateRoot=context.getConfig().getProperty("templateRoot");
 		String templateRootPath=this.getClass().getClassLoader().getResource(templateRoot).getFile();
 		File templateRootDir=new File(templateRootPath);
@@ -163,8 +163,8 @@ public class MyDispatchServlet extends HttpServlet{
 
 	private void initHandlerAdapters(MyApplicationContext context) {
 		// TODO Auto-generated method stub
-		//½¨Òé¸öÇëÇó×ª»»³ÉhandlerMappingËùÓĞ²ÎÊı¶¼ÊÇ×Ö·û´®£¬½«×Ö·û´®ÅäÖÃµ½handlerÖĞµÄ¸÷¸ö×Ö¶ÎÖĞÈ¥
-		//ËûĞèÒªÄÃµ½handlerMapping²ÅÄÜ¸É»î¡£ÓĞ¼¸¸ömapping¾ÍÓĞ¼¸¸öAdapter£¬ĞèÒª½øĞĞµü´ú
+		//å»ºè®®ä¸ªè¯·æ±‚è½¬æ¢æˆhandlerMappingæ‰€æœ‰å‚æ•°éƒ½æ˜¯å­—ç¬¦ä¸²ï¼Œå°†å­—ç¬¦ä¸²é…ç½®åˆ°handlerä¸­çš„å„ä¸ªå­—æ®µä¸­å»
+		//ä»–éœ€è¦æ‹¿åˆ°handlerMappingæ‰èƒ½å¹²æ´»ã€‚æœ‰å‡ ä¸ªmappingå°±æœ‰å‡ ä¸ªAdapterï¼Œéœ€è¦è¿›è¡Œè¿­ä»£
 		for (HandlerMapping handlerMapping : handlerMappings) {
 			this.handlerAdapters.put(handlerMapping, new HandlerAdapter());
 		}
@@ -230,7 +230,7 @@ public class MyDispatchServlet extends HttpServlet{
 		String contextPath=req.getContextPath();
 		url=url.replace(contextPath, "").replaceAll("/+", "/");
 		for(HandlerMapping mapping:this.handlerMappings) {
-			//±éÀúlist
+			//éå†list
 			Matcher match=mapping.getPattern().matcher(url);
 			if(!match.matches()) {continue;}
 			return mapping;

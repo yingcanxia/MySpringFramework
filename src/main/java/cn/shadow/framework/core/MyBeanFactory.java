@@ -1,8 +1,8 @@
 package cn.shadow.framework.core;
-//µ¥Àı¹¤³§µÄ¶¥²ãÉè¼Æ
+//å•ä¾‹å·¥å‚çš„é¡¶å±‚è®¾è®¡
 public interface MyBeanFactory {
-	//±¾·½·¨·Ç³£¹Ø¼üÍ¨¹ıÎ¨Ò»µÄÈë¿Ú»ñÈ¡¶ÔÏó
-	//µ¥ÀıÄ£Ê½/µ¥Àı¶ÔÏó£¬Ë½ÓĞ»¯¹¹Ôì·½·¨·¢
+	//æœ¬æ–¹æ³•éå¸¸å…³é”®é€šè¿‡å”¯ä¸€çš„å…¥å£è·å–å¯¹è±¡
+	//å•ä¾‹æ¨¡å¼/å•ä¾‹å¯¹è±¡ï¼Œç§æœ‰åŒ–æ„é€ æ–¹æ³•å‘
 	
 	Object getBean(String beanName) throws Exception;
 	Object getBean(Class<?> beanClass) throws Exception;

@@ -13,10 +13,10 @@ import cn.shadow.framework.beans.config.MyBeanDefinition;
 public class MyBeanDefinitionReader {
 	private Properties config=new Properties();
 	private List<String>registerBeanClasses=new ArrayList<String>();
-	//¹Ì¶¨ÅäÖÃÎÄ¼şÖĞµÄkeyÏàµ±ÓÚxml
+	//å›ºå®šé…ç½®æ–‡ä»¶ä¸­çš„keyç›¸å½“äºxml
 	private final String  SACN_PACKAGE="scanPackage";
 	public MyBeanDefinitionReader(String... localtions) {
-		//Í¨¹ıurl¶¨Î»ÕÒµ½ÆäËù¶ÔÓ¦Â·¾¶µÄÎÄ¼şÈ»ºó×ª»»ÎªÎÄ¼şÁ÷
+		//é€šè¿‡urlå®šä½æ‰¾åˆ°å…¶æ‰€å¯¹åº”è·¯å¾„çš„æ–‡ä»¶ç„¶åè½¬æ¢ä¸ºæ–‡ä»¶æµ
 		InputStream is=this.getClass().getClassLoader().getResourceAsStream(localtions[0].replace("classpath:", ""));
 		try {
 			config.load(is);
@@ -37,7 +37,7 @@ public class MyBeanDefinitionReader {
 	}
 	private void doScanner(String property) {
 		// TODO Auto-generated method stub
-		//»ñµÃÅäÖÃÎÄ¼şÖĞµÄ¼üÖµ¶Ô
+		//è·å¾—é…ç½®æ–‡ä»¶ä¸­çš„é”®å€¼å¯¹
 		URL url=this.getClass().getClassLoader().getResource("/"+property.replaceAll("\\.", "/"));
 		File classPath=new File(url.getFile());
 		for (File file : classPath.listFiles()) {
@@ -46,7 +46,7 @@ public class MyBeanDefinitionReader {
 			}else {
 				if(!file.getName().endsWith(".class")) {continue;}
 				String className=property+"."+file.getName().replace(".class", "");	
-				//ÕûÀíÀàÃû
+				//æ•´ç†ç±»å
 				registerBeanClasses.add(className);
 			} 
 		}
@@ -55,15 +55,15 @@ public class MyBeanDefinitionReader {
 		return this.config;
 	}
 	
-	//°ÑÅäÖÃÎÄ¼şÖĞËùÓĞÉ¨Ãèµ½µÄÅäÖÃĞÅÏ¢×ª»¯³ÉMyBeanDefinition¶ÔÏó£¬ÒÔ±ãÓÚÖ®ºóIOC²Ù×÷·½±ã
+	//æŠŠé…ç½®æ–‡ä»¶ä¸­æ‰€æœ‰æ‰«æåˆ°çš„é…ç½®ä¿¡æ¯è½¬åŒ–æˆMyBeanDefinitionå¯¹è±¡ï¼Œä»¥ä¾¿äºä¹‹åIOCæ“ä½œæ–¹ä¾¿
 	public List<MyBeanDefinition> loadBeanDefinitions() {
-		//¶ÔÆä½øĞĞ½âÎöÔÚÕâÀï·â×°×îºÏÀí
+		//å¯¹å…¶è¿›è¡Œè§£æåœ¨è¿™é‡Œå°è£…æœ€åˆç†
 		List<MyBeanDefinition>result=new ArrayList<MyBeanDefinition>();
 		try {
 			for(String className:registerBeanClasses) {
 				Class<?>beanClass=Class.forName(className);
-				//Èç¹ûÊÇÒ»¸ö½Ó¿ÚÔò²»ÄÜ±»ÊµÀı»¯
-				//ÓÃËüÊµÏÖÀàÀ´ÊµÏÖÊµÀı»¯
+				//å¦‚æœæ˜¯ä¸€ä¸ªæ¥å£åˆ™ä¸èƒ½è¢«å®ä¾‹åŒ–
+				//ç”¨å®ƒå®ç°ç±»æ¥å®ç°å®ä¾‹åŒ–
 				if(beanClass.isInterface()) {
 					continue;
 				}
@@ -81,13 +81,13 @@ public class MyBeanDefinitionReader {
 		return result;
 		
 	}
-	//½«Ã¿Ò»¸öÅäÖÃĞÅÏ¢½âÎö³ÉÒ»¸öBeanDefinition
+	//å°†æ¯ä¸€ä¸ªé…ç½®ä¿¡æ¯è§£ææˆä¸€ä¸ªBeanDefinition
 	private MyBeanDefinition doCreateBeanDefinition(String className,String beanClassName) {
 		MyBeanDefinition beanDefinition=new MyBeanDefinition();
 		beanDefinition.setBeanClassName(beanClassName);
 		beanDefinition.setFactoryBeanName(className);
 		return  beanDefinition;
-		//ÓĞ¿ÉÄÜÊÇ½Ó¿Ú£¬¶ÔÆäÊµÏÖÀà½øĞĞ´¦Àí£¬ÓÃÆäÊµÏÖÀà×÷ÎªBeanClassName
+		//æœ‰å¯èƒ½æ˜¯æ¥å£ï¼Œå¯¹å…¶å®ç°ç±»è¿›è¡Œå¤„ç†ï¼Œç”¨å…¶å®ç°ç±»ä½œä¸ºBeanClassName
 
 	}
 	private String  toLowerFirstCase(String simpleName) {

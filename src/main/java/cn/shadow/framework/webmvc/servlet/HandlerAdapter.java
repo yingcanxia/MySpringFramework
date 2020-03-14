@@ -17,11 +17,11 @@ public class HandlerAdapter {
 	public MyModleAndView handle(HttpServletRequest request,HttpServletResponse response,Object handler) throws Exception{
 		HandlerMapping handlerMapping=(HandlerMapping) handler;
 		
-		//½«·½·¨µÄĞÎÊ½²ÎÊıºÍrequestµÄÊµ¼Ê²ÎÊı½øĞĞÒ»Ò»¶ÔÓ¦
+		//å°†æ–¹æ³•çš„å½¢å¼å‚æ•°å’Œrequestçš„å®é™…å‚æ•°è¿›è¡Œä¸€ä¸€å¯¹åº”
 		Map<String,Integer> paramIndexMapping=new HashMap<String, Integer>();
-		//ÌáÈ¡·½·¨ÖĞÌí¼ÓÁË×¢½âµÄ²ÎÊı
-		//ÄÃµ½·½·¨ÉÏµÄ×¢½â£¬µÃµ½µÄÊÇÒ»¸ö¶şÎ¬Êı×é
-		//ÒòÎªÒ»¸ö²ÎÊı¿ÉÒÔÓĞ¶à¸ö×¢½â£¬¶øÒ»¸ö·½·¨ÓÖ¿ÉÒÔÓĞ¶à¸ö²ÎÊı
+		//æå–æ–¹æ³•ä¸­æ·»åŠ äº†æ³¨è§£çš„å‚æ•°
+		//æ‹¿åˆ°æ–¹æ³•ä¸Šçš„æ³¨è§£ï¼Œå¾—åˆ°çš„æ˜¯ä¸€ä¸ªäºŒç»´æ•°ç»„
+		//å› ä¸ºä¸€ä¸ªå‚æ•°å¯ä»¥æœ‰å¤šä¸ªæ³¨è§£ï¼Œè€Œä¸€ä¸ªæ–¹æ³•åˆå¯ä»¥æœ‰å¤šä¸ªå‚æ•°
 		Annotation[][]pa=handlerMapping.getMethod().getParameterAnnotations();
 		for(int i=0;i<pa.length;i++) {
 			for(Annotation a:pa[i]) {
@@ -42,24 +42,24 @@ public class HandlerAdapter {
 			}
 		}
 		
-		//¶ÔÏóÁĞ±í
-		//»ñµÃ·½·¨µÄĞÎ²ÎÁĞ±í
+		//å¯¹è±¡åˆ—è¡¨
+		//è·å¾—æ–¹æ³•çš„å½¢å‚åˆ—è¡¨
 		Map<String,String[]>params=request.getParameterMap();
-		//Êµ²ÎÁĞ±í
+		//å®å‚åˆ—è¡¨
 		Object[] paramValues=new Object[paramTypes.length];
-		//httpĞ­ÒéÊÇ»ùÓÚ×Ö·û´®µÄurl£¿para=aaa,¼üÖµ¶ÔÆäÖĞkeyÖµ»áÓĞ¶à¸öÖµËùÒÔÕâÀïÊÇÊı×é
+		//httpåè®®æ˜¯åŸºäºå­—ç¬¦ä¸²çš„urlï¼Ÿpara=aaa,é”®å€¼å¯¹å…¶ä¸­keyå€¼ä¼šæœ‰å¤šä¸ªå€¼æ‰€ä»¥è¿™é‡Œæ˜¯æ•°ç»„
 		for (Map.Entry<String, String[]> parm : params.entrySet()) {
-			//½«Êı×é»¯½â
+			//å°†æ•°ç»„åŒ–è§£
 			String value =Arrays.toString(parm.getValue()).replaceAll("\\[|\\]", "").replaceAll("\\s", ",");
 			if(!paramIndexMapping.containsKey(parm.getKey())) {
-				//Èç¹ûÃ»ÓĞ¶ÔÓ¦µÄkeyÖµÕâÌø³ö
+				//å¦‚æœæ²¡æœ‰å¯¹åº”çš„keyå€¼è¿™è·³å‡º
 				continue;
 			}
-			//ÒÀÕÕ·½·¨µÄ²ÎÊıÀàĞÍÁĞ±í½«Öµ´º·¼ÔÚÁĞ±í
+			//ä¾ç…§æ–¹æ³•çš„å‚æ•°ç±»å‹åˆ—è¡¨å°†å€¼æ˜¥èŠ³åœ¨åˆ—è¡¨
 			int index=paramIndexMapping.get(parm.getKey());
 			paramValues[index]=caseStringValue(paramTypes[index], value);
 		}
-		//µ÷ÓÃÕÒµ½µÄ·½·¨È¥Ö´ĞĞ
+		//è°ƒç”¨æ‰¾åˆ°çš„æ–¹æ³•å»æ‰§è¡Œ
 		if(paramIndexMapping.containsKey(HttpServletRequest.class.getName())) {
 			int reqIndex=paramIndexMapping.get(HttpServletRequest.class.getName());
 			paramValues[reqIndex]=request;
@@ -70,10 +70,10 @@ public class HandlerAdapter {
 		}
 		
 		Object result=handlerMapping.getMethod().invoke(handlerMapping.getController(), paramValues);
-		//µ±·µ»ØÖµÊÇ¿Õ»òÕß·½·¨ÊÇvoidµÄÊ±ºò
+		//å½“è¿”å›å€¼æ˜¯ç©ºæˆ–è€…æ–¹æ³•æ˜¯voidçš„æ—¶å€™
 		if(result==null||result instanceof Void) {
 			return null;
-			//Õı³£·µ»Ø
+			//æ­£å¸¸è¿”å›
 		}
 		boolean isModelAndView = handlerMapping.getMethod().getReturnType() == MyModleAndView.class;
 
@@ -85,11 +85,11 @@ public class HandlerAdapter {
 	}
 	private Object caseStringValue(Class<?> paramsType, String value) {
 		// TODO Auto-generated method stub
-		//ÀàĞÍ×ª»¯
+		//ç±»å‹è½¬åŒ–
 		if(String.class == paramsType){
 			return value;
 		}
-		//Èç¹ûÊÇint
+		//å¦‚æœæ˜¯int
 		if(Integer.class == paramsType){
 			return Integer.valueOf(value);
 		}

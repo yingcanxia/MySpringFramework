@@ -9,11 +9,11 @@ public class MyBeanWrapper {
 		this.wrappedInstance=wrappedInstance;
 	}
 	
-	//如果是单例模式则直接get即可
+	//濡傛灉鏄崟渚嬫ā寮忓垯鐩存帴get鍗冲彲
 	public Object getWappedInstance() {
 		return this.wrappedInstance;
 	}
-	//如果不是单例将从本方法中new对象出来
+	//濡傛灉涓嶆槸鍗曚緥灏嗕粠鏈柟娉曚腑new瀵硅薄鍑烘潵
 	public Class<?> getWrappedClass() {
 		return this.wrappedInstance.getClass();
 	}

@@ -14,8 +14,8 @@ import cn.shadow.framework.annotation.MyRequestParam;
 
 public class HandlerMapping {
 	/*
-	 * //±ØĞë½«Á©·Åµ½mappingÖĞ private Pattern url; private Method method; private Object
-	 * controller; private Class<?>[] paramTypes; //»¹¿ÉÒÔ±£´æĞÎ²ÎÁĞ±í public
+	 * //å¿…é¡»å°†ä¿©æ”¾åˆ°mappingä¸­ private Pattern url; private Method method; private Object
+	 * controller; private Class<?>[] paramTypes; //è¿˜å¯ä»¥ä¿å­˜å½¢å‚åˆ—è¡¨ public
 	 * Map<String,Integer>paramIndexMapping; public HandlerMapping(Pattern url,
 	 * Method method, Object controller) { super(); this.url = url; this.method =
 	 * method; this.controller = controller; paramTypes=method.getParameterTypes();

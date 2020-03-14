@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 /**
- * 查询业务
+ * 鏌ヨ涓氬姟
  * @author Tom
  *
  */
@@ -20,13 +20,13 @@ public class QueryService implements IQueryService {
 
 
 	/**
-	 * 查询
+	 * 鏌ヨ
 	 */
 	public String query(String name) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time = sdf.format(new Date());
 		String json = "{name:\"" + name + "\",time:\"" + time + "\"}";
-		log.info("这是在业务方法中打印的：" + json);
+		log.info("杩欐槸鍦ㄤ笟鍔℃柟娉曚腑鎵撳嵃鐨勶細" + json);
 		return json;
 	}
 

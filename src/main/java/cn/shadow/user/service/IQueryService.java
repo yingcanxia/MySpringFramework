@@ -1,14 +1,14 @@
 package cn.shadow.user.service;
 
 /**
- * 查询业务
+ * 鏌ヨ涓氬姟
  * @author Tom
  *
  */
 public interface IQueryService {
 	
 	/**
-	 * 查询
+	 * 鏌ヨ
 	 */
 	public String query(String name);
 }

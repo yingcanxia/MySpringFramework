@@ -8,7 +8,7 @@ import cn.shadow.framework.context.support.MyAbstractApplicationContext;
 
 public class MyDefaultListableBeanFactory extends MyAbstractApplicationContext{
 
-	//MyBeanDefinition´æ´¢ÅäÖÃÎÄ¼şĞÅÏ¢µÄ
+	//MyBeanDefinitionå­˜å‚¨é…ç½®æ–‡ä»¶ä¿¡æ¯çš„
 	protected final Map<String,MyBeanDefinition>beanDefinitionMap =new ConcurrentHashMap<String,MyBeanDefinition>();
 	
 	
